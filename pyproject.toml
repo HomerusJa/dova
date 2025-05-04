@@ -7,7 +7,9 @@ authors = [
     { name = "HomerusJa", email = "jakob@schluse.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "typer>=0.15.3",
+]
 
 [project.scripts]
 dova = "dova:main"
