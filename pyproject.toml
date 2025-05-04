@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-dova = "dova:main"
+dova = "dova.cli:app"
 
 [build-system]
 requires = ["hatchling"]
