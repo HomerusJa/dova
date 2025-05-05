@@ -21,20 +21,26 @@ def _is_drive_root(path: Path) -> bool:
     return path == path.parent
 
 
-def find_repo(start_path: Path) -> Path:
-    """Search upwards from start_path for a Dova repository and return its root path.
+def find_repo(
+    start_path: Path, max_iterations: int = 100, marker_dir: str = ".dova"
+) -> Path:
+    """Search upwards from start_path for a repository marked by a specific directory.
 
     Raises:
         RepoNotFoundException: If no repository is found.
     """
     path = start_path.resolve()
-    # TODO: Introduce a sanity iteration limit
-    while True:
-        if (path / ".dova").is_dir():
+    for i in range(max_iterations):
+        if (path / marker_dir).is_dir():
             _logger.debug(f"Found repository at {path}")
             return path
         if _is_drive_root(path):
-            raise RepoNotFoundException(
-                f"No repository found in parent directories of {start_path}"
-            )
+            break
         path = path.parent
+
+    _logger.warning(
+        f"Repository marker '{marker_dir}' not found after {i + 1} iterations"
+    )
+    raise RepoNotFoundException(
+        f"No repository found in parent directories of {start_path}"
+    )
