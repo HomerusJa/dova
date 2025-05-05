@@ -1,6 +1,14 @@
 from pathlib import Path
 
-from .errors import RepoNotFoundException
+from .errors import DovaException
+from .logging import get_logger
+
+
+_logger = get_logger(__name__)
+
+
+class RepoNotFoundException(DovaException):
+    """Raised when a Dova repository could not be found."""
 
 
 def init_repo(path: Path) -> None:
@@ -20,12 +28,13 @@ def find_repo(start_path: Path) -> Path:
         RepoNotFoundException: If no repository is found.
     """
     path = start_path.resolve()
+    # TODO: Introduce a sanity iteration limit
     while True:
         if (path / ".dova").is_dir():
+            _logger.debug(f"Found repository at {path}")
             return path
         if _is_drive_root(path):
-            break
+            raise RepoNotFoundException(
+                f"No repository found in parent directories of {start_path}"
+            )
         path = path.parent
-    raise RepoNotFoundException(
-        f"No repository found in parent directories of {start_path}"
-    )
