@@ -11,7 +11,7 @@ from .self import self_app
 from .task import task_app
 
 app = typer.Typer(
-    help="🐾 Dova – A task-centric version control system", no_args_is_help=True
+    help="🐾 Dova - A task-centric version control system", no_args_is_help=True
 )
 
 app.add_typer(self_app)

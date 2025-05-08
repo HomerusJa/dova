@@ -16,17 +16,19 @@ def init(
             exists=True,
             file_okay=False,
             writable=True,
-            resolve_path=True,
-            help="Path to initialize Dova project in (default: current working directory)",
+            help="Path to initialize Dova project in (default: cwd)",
         ),
-    ] = Path.cwd(),
+    ] = Path("."),
 ):
     """Initialize a new Dova project"""
     ctx.obj.ensure_object(ContextObject)
+
+    path = path.resolve()
     if find_repo(path) is not None:
         ctx.obj.logger.warning(f"Repository already exists at {path}")
         return
     init_repo(path)
+    ctx.obj.logger.info(f"Dova project initialized at {path}")
 
 
 def sync():

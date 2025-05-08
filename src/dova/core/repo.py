@@ -18,9 +18,9 @@ def _is_drive_root(path: Path) -> bool:
 def find_repo(
     start_path: Path, max_iterations: int = 100, marker_dir: str = ".dova"
 ) -> Path | None:
-    """Search upwards from start_path for a repository marked by a specific directory."""
+    """Search upwards from start_path for a folder containing marker_dir."""
     path = start_path.resolve()
-    for i in range(max_iterations):
+    for _ in range(max_iterations):
         if (path / marker_dir).is_dir():
             _logger.debug(f"Found repository at {path}")
             return path
