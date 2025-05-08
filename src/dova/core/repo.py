@@ -39,7 +39,7 @@ def find_repo(
         path = path.parent
 
     _logger.warning(
-        f"Repository marker '{marker_dir}' not found after {i + 1} iterations"
+        f"Repository marker '{marker_dir}' not found after {max_iterations} iterations"
     )
     raise RepoNotFoundException(
         f"No repository found in parent directories of {start_path}"

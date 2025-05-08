@@ -16,7 +16,9 @@ def setup_logging(
         file_path (str): File path for the log file.
         rich_tracebacks (bool): Whether to use rich tracebacks in logs.
     """
-    handlers = [RichHandler(rich_tracebacks=rich_tracebacks, show_path=False)]
+    handlers: list[logging.Handler] = [
+        RichHandler(rich_tracebacks=rich_tracebacks, show_path=False)
+    ]
 
     if log_to_file:
         file_handler = logging.FileHandler(file_path)

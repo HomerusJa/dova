@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import TypedDict
 
 import typer
 
@@ -23,9 +24,15 @@ app.command()(init)
 app.command()(sync)
 
 
+class ContextObject(TypedDict):
+    verbose: bool
+    logger: logging.Logger
+    repo_path: Path | None
+
+
 @app.callback()
 def initialize(ctx: typer.Context, verbose: bool = False):
-    ctx.ensure_object(dict)
+    ctx.ensure_object(ContextObject)
     ctx.obj["verbose"] = verbose
     setup_logging(logging.DEBUG if verbose else logging.INFO)
     cli_logger = logging.getLogger("dova.cli")
@@ -34,7 +41,5 @@ def initialize(ctx: typer.Context, verbose: bool = False):
     try:
         ctx.obj["repo_path"] = find_repo(Path.cwd())
     except RepoNotFoundException:
-        cli_logger.error(
-            "No Dova repository found in parent directories of current directory"
-        )
-        raise typer.Exit(code=1)
+        ctx.obj["repo_path"] = None
+        cli_logger.warning("No repository found in current directory")
