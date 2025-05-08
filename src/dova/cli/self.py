@@ -1,5 +1,6 @@
 import contextlib
 import importlib.metadata
+
 import typer
 
 self_app = typer.Typer(
