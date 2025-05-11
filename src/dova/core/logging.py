@@ -1,28 +1,27 @@
 import logging
+from pathlib import Path
 
 from rich.logging import RichHandler
 
 
 def setup_logging(
     level: int = logging.INFO,
-    log_to_file: bool = False,
-    file_path: str = "dova.log",
+    file_path: Path | None = None,
     rich_tracebacks: bool = True,
 ) -> None:
     """Set up logging for the Dova application.
 
     Args:
-        level (int): Logging level (e.g., logging.DEBUG).
-        log_to_file (bool): Whether to also log to a file.
-        file_path (str): File path for the log file.
-        rich_tracebacks (bool): Whether to use rich tracebacks in logs.
+        level: Logging level (e.g., logging.DEBUG).
+        file_path: File path for the log file or None if no log file should be created.
+        rich_tracebacks: Whether to use rich tracebacks in logs.
     """
     handlers: list[logging.Handler] = [
         RichHandler(rich_tracebacks=rich_tracebacks, show_path=False)
     ]
 
-    if log_to_file:
-        file_handler = logging.FileHandler(file_path)
+    if file_path is not None:
+        file_handler = logging.FileHandler(file_path.resolve())
         file_formatter = logging.Formatter(
             "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s"
         )

@@ -1,27 +1,13 @@
-from dataclasses import dataclass
-from pathlib import Path
-
 import typer
 
-from dova.core.repo import find_repo
+from ._initialize import ContextObjectWithRepoPath
 
-from ._context import ContextObject
-
-task_app = typer.Typer(name="task", help="Manage tasks", no_args_is_help=True)
-
-
-@dataclass
-class TaskContextObject(ContextObject):
-    repo_path: Path | None = None
-
-
-@task_app.callback()
-def initialize(ctx: typer.Context):
-    ctx.ensure_object(TaskContextObject)
-    ctx.obj.repo_path = find_repo(Path.cwd())
-    if ctx.obj.repo_path is None:
-        ctx.obj.logger.error("No repository found in current directory")
-        raise typer.Exit(1)
+task_app = typer.Typer(
+    name="task",
+    help="Manage tasks",
+    no_args_is_help=True,
+    callback=ContextObjectWithRepoPath.callback,
+)
 
 
 @task_app.command("list")

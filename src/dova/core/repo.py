@@ -15,6 +15,11 @@ def _is_drive_root(path: Path) -> bool:
     return path == path.parent
 
 
+def is_repo(path: Path) -> bool:
+    """Return True if the given path is a Dova repository."""
+    return (path / ".dova").is_dir()
+
+
 def find_repo(
     start_path: Path, max_iterations: int = 100, marker_dir: str = ".dova"
 ) -> Path | None:
