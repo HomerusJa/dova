@@ -29,17 +29,21 @@ target-version = "py313"
 
 [tool.ruff.lint]
 select = [
-  "B",   # flake8-bugbear
-  "BLE", # flake8-blind-except
-  "C4",  # flake8-comprehensions
-  "E",   # pycodestyle errors
-  "F",   # Pyflakes
-  "I",   # isort
-  "RUF", # Ruff-specific rules
-  "SIM", # flake8-simplify
-  "W",   # pycodestyle warnings
-  "T20",
+    "B", # flake8-bugbear
+    "BLE", # flake8-blind-except
+    "C4", # flake8-comprehensions
+    "E", # pycodestyle errors
+    "F", # Pyflakes
+    "I", # isort
+    "RUF", # Ruff-specific rules
+    "SIM", # flake8-simplify
+    "W", # pycodestyle warnings
+    "T20",
 ]
 
 [tool.ruff.lint.isort]
 known-first-party = ["dova"]
+
+[tool.pyright]
+files = ["**/*.py"]
+strict = ["**/*.py"]
